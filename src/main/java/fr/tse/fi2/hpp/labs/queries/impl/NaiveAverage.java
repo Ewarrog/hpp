@@ -2,7 +2,6 @@ package fr.tse.fi2.hpp.labs.queries.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 import fr.tse.fi2.hpp.labs.beans.DebsRecord;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
@@ -12,8 +11,8 @@ public class NaiveAverage extends AbstractQueryProcessor {
 
 	private List<Float> numbers = null;
 
-	public NaiveAverage(QueryProcessorMeasure measure, BlockingQueue<String> q) {
-		super(measure,q);
+	public NaiveAverage(QueryProcessorMeasure measure) {
+		super(measure);
 		numbers = new ArrayList<>();
 	}
 

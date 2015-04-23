@@ -3,9 +3,7 @@ package fr.tse.fi2.hpp.labs.main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +12,7 @@ import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 import fr.tse.fi2.hpp.labs.queries.impl.NaiveAverage;
-import fr.tse.fi2.hpp.labs.queries.impl.SimpleQuerySumEvent;
-import fr.tse.fi2.hpp.labs.queries.impl.lab1.StupidAveragePrice;
-import fr.tse.fi2.hpp.labs.queries.impl.lab1.SumQuery;
 import fr.tse.fi2.hpp.labs.queries.impl.lab3.IncrementalAverage_lab3;
-import fr.tse.fi2.hpp.labs.queries.impl.lab3.QueryWriter;
 import fr.tse.fi2.hpp.labs.queries.impl.lab3.StupidAveragePrice_lab3;
 
 /**
@@ -44,20 +38,15 @@ public class MainNonStreaming {
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
 		// Init dispatcher and load everything
 		LoadFirstDispatcher dispatch = new LoadFirstDispatcher(
-				"src/main/resources/data/100k.csv");
+				"src/main/resources/data/sorted_data.csv");
 		logger.info("Finished parsing");
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
 		
-		//write queue
-		BlockingQueue<String> writeQueue1 = new LinkedBlockingQueue<>();
-		BlockingQueue<String> writeQueue2 = new LinkedBlockingQueue<>();
-		
 		// Add you query processor here
-		processors.add(new StupidAveragePrice_lab3(measure,writeQueue1));
-		processors.add(new NaiveAverage(measure,writeQueue2));
-		processors.add(new QueryWriter(measure,writeQueue1));
-		//processors.add(new QueryWriter(measure,writeQueue2));
+		//processors.add(new StupidAveragePrice_lab3(measure));
+		processors.add(new IncrementalAverage_lab3(measure));
+
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
 			dispatch.registerQueryProcessor(queryProcessor);

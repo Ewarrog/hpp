@@ -3,9 +3,7 @@ package fr.tse.fi2.hpp.labs.main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.StreamingDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
-import fr.tse.fi2.hpp.labs.queries.impl.SimpleQuerySumEvent;
 import fr.tse.fi2.hpp.labs.queries.impl.lab1.StupidAveragePrice;
 import fr.tse.fi2.hpp.labs.queries.impl.lab3.IncrementalAverage_lab3;
-import fr.tse.fi2.hpp.labs.queries.impl.lab3.QueryWriter;
 
 /**
  * Main class of the program. Register your new queries here
@@ -41,17 +37,12 @@ public class MainStreaming {
 		// Init dispatcher
 		StreamingDispatcher dispatch = new StreamingDispatcher(
 				"src/main/resources/data/100k.csv");
-
-		//write queue
-		BlockingQueue<String> writeQueue1 = new LinkedBlockingQueue<>();
-		BlockingQueue<String> writeQueue2 = new LinkedBlockingQueue<>();
 		
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
 		// Add you query processor here
-		processors.add(new StupidAveragePrice(measure, writeQueue1));
-		processors.add(new IncrementalAverage_lab3(measure, writeQueue2));
-		processors.add(new QueryWriter(measure,writeQueue1));
+		processors.add(new StupidAveragePrice(measure));
+		processors.add(new IncrementalAverage_lab3(measure));
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
 			dispatch.registerQueryProcessor(queryProcessor);

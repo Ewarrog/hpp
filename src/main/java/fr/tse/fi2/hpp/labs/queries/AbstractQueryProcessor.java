@@ -1,9 +1,5 @@
 package fr.tse.fi2.hpp.labs.queries;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,6 +13,7 @@ import fr.tse.fi2.hpp.labs.beans.GridPoint;
 import fr.tse.fi2.hpp.labs.beans.Route;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.StreamingDispatcher;
+import fr.tse.fi2.hpp.labs.queries.impl.lab3.QueryWriter;
 
 /**
  * Every query must extend this class that provides basic functionalities such
@@ -33,7 +30,7 @@ import fr.tse.fi2.hpp.labs.dispatcher.StreamingDispatcher;
  */
 public abstract class AbstractQueryProcessor implements Runnable {
 
-	final static Logger logger = LoggerFactory
+	protected final static Logger logger = LoggerFactory
 			.getLogger(AbstractQueryProcessor.class);
 
 	/**
@@ -44,10 +41,7 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	 * Unique ID of the query processor
 	 */
 	private final int id = COUNTER.incrementAndGet();
-	/**
-	 * Writer to write the output of the queries
-	 */
-	private BufferedWriter outputWriter;
+	
 	/**
 	 * Internal queue of events
 	 */
@@ -55,36 +49,34 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	/**
 	 * Global measurement
 	 */
-	private final QueryProcessorMeasure measure;
+	protected final QueryProcessorMeasure measure;
 	/**
 	 * For synchronisation purpose
 	 */
-	private CountDownLatch latch;
+	protected CountDownLatch latch;
 
 	/**
 	 * Queue for writing
 	 */
-	public final BlockingQueue<String> writeQueue;
+	public BlockingQueue<String> writeQueue;
+	
+	public QueryWriter writer;
 	
 	/**
 	 * Default constructor. Initialize event queue and writer
 	 */
-	public AbstractQueryProcessor(QueryProcessorMeasure measure, BlockingQueue<String> q) {
+	public AbstractQueryProcessor(QueryProcessorMeasure measure) {
 		// Set the global measurement instance
 		this.measure = measure;
 		// Initialize queue
 		this.eventqueue = new LinkedBlockingQueue<>();
 		
-		this.writeQueue = q;
-
-		// Initialize writer
-		try {
-			outputWriter = new BufferedWriter(new FileWriter(new File(
-					"result/query" + id + ".txt")));
-		} catch (IOException e) {
-			logger.error("Cannot open output file for " + id, e);
-			System.exit(-1);
-		}
+		this.writeQueue = new LinkedBlockingQueue<>();
+		
+		this.writer = new QueryWriter(writeQueue, getId());
+		
+		new Thread(writer).start();
+		
 	}
 
 	public void setLatch(CountDownLatch latch) {
@@ -199,32 +191,28 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	 *            the line to write as an answer
 	 */
 	protected void writeLine(String line) {
-		try {
-			outputWriter.write(line);
-			outputWriter.newLine();
-		} catch (IOException e) {
-			logger.error("Could not write new line for query processor " + id
-					+ ", line content " + line, e);
-		}
-
+		
+			try {
+				writeQueue.put(line);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 	}
-
+	
 	/**
 	 * Poison pill has been received, close output
 	 */
 	protected void finish() {
-		// Close writer
-		try {
-			outputWriter.flush();
-			outputWriter.close();
-		} catch (IOException e) {
-			logger.error("Cannot property close the output file for query "
-					+ id, e);
-		}
 		// Notify finish time
-		measure.notifyFinish(this.id);
+		measure.notifyFinish(getId());
 		// Decrease latch count
 		latch.countDown();
+
+		writeLine("KILL YOURSELF!");
 	}
+
+	
 
 }
