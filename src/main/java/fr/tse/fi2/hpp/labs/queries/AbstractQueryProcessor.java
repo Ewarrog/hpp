@@ -62,13 +62,20 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	private CountDownLatch latch;
 
 	/**
+	 * Queue for writing
+	 */
+	public final BlockingQueue<String> writeQueue;
+	
+	/**
 	 * Default constructor. Initialize event queue and writer
 	 */
-	public AbstractQueryProcessor(QueryProcessorMeasure measure) {
+	public AbstractQueryProcessor(QueryProcessorMeasure measure, BlockingQueue<String> q) {
 		// Set the global measurement instance
 		this.measure = measure;
 		// Initialize queue
 		this.eventqueue = new LinkedBlockingQueue<>();
+		
+		this.writeQueue = q;
 
 		// Initialize writer
 		try {

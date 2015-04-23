@@ -1,5 +1,7 @@
 package fr.tse.fi2.hpp.labs.queries.impl;
 
+import java.util.concurrent.BlockingQueue;
+
 import fr.tse.fi2.hpp.labs.beans.DebsRecord;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
@@ -15,8 +17,8 @@ public class SimpleQuerySumEvent extends AbstractQueryProcessor {
 	// Total of events
 	int sum;
 
-	public SimpleQuerySumEvent(QueryProcessorMeasure measure) {
-		super(measure);
+	public SimpleQuerySumEvent(QueryProcessorMeasure measure, BlockingQueue<String> q) {
+		super(measure,q);
 		sum = 0;
 	}
 

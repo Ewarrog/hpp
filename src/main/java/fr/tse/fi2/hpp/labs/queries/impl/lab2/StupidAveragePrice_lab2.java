@@ -1,4 +1,4 @@
-package fr.tse.fi2.hpp.labs.queries.impl.lab1;
+package fr.tse.fi2.hpp.labs.queries.impl.lab2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,11 @@ import fr.tse.fi2.hpp.labs.beans.DebsRecord;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 
-public class StupidAveragePrice extends AbstractQueryProcessor {
+public class StupidAveragePrice_lab2 extends AbstractQueryProcessor {
 
 	private ArrayList<Float> liste = null;
 	
-	public StupidAveragePrice(QueryProcessorMeasure measure, BlockingQueue<String> q) {
+	public StupidAveragePrice_lab2(QueryProcessorMeasure measure, BlockingQueue<String> q) {
 		super(measure, q);
 		liste = new ArrayList<Float>();
 	}
