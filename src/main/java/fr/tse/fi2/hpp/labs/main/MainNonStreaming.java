@@ -8,12 +8,13 @@ import java.util.concurrent.CountDownLatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.tse.fi2.hpp.labs.beans.DebsRecord;
+import fr.tse.fi2.hpp.labs.beans.GridPoint;
+import fr.tse.fi2.hpp.labs.beans.Route;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
-import fr.tse.fi2.hpp.labs.queries.impl.NaiveAverage;
-import fr.tse.fi2.hpp.labs.queries.impl.lab3.IncrementalAverage_lab3;
-import fr.tse.fi2.hpp.labs.queries.impl.lab3.StupidAveragePrice_lab3;
+import fr.tse.fi2.hpp.labs.queries.impl.lab4.RouteMembershipProcessor;
 
 /**
  * Main class of the program. Register your new queries here
@@ -45,7 +46,8 @@ public class MainNonStreaming {
 		
 		// Add you query processor here
 		//processors.add(new StupidAveragePrice_lab3(measure));
-		processors.add(new IncrementalAverage_lab3(measure));
+		RouteMembershipProcessor pross = new RouteMembershipProcessor(measure);
+		processors.add(pross);
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
@@ -74,6 +76,14 @@ public class MainNonStreaming {
 		// Output measure and ratio per query processor
 		measure.setProcessedRecords(dispatch.getRecords());
 		measure.outputMeasure();
+		
+		DebsRecord r = new DebsRecord("a", "q", (long)0.0, (long)0.0, (long)0.0, (float)0.0, (float)-73.955582,(float)40.772488,(float)-73.949554,(float)40.773617, "a", (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, false);
+		
+		if(pross.searchRoute(r)) {
+			System.out.println("Chemin trouvé");
+		} else {
+			System.out.println("Chemin non trouvé");
+		}
 
 	}
 

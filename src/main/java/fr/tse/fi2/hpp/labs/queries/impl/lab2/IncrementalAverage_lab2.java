@@ -11,7 +11,6 @@ import fr.tse.fi2.hpp.labs.beans.DebsRecord;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 
-@State(Scope.Thread)
 public class IncrementalAverage_lab2 extends AbstractQueryProcessor {
 
 	private int nb = 0;
@@ -21,11 +20,6 @@ public class IncrementalAverage_lab2 extends AbstractQueryProcessor {
 		super(measure);
 	}
 
-	@Override
-	@Benchmark
-	@Measurement(iterations=2)
-	@Warmup(iterations=2)
-	@Fork(1)
 	protected void process(DebsRecord record) {
 		nb++;
 		sum += record.getFare_amount();
