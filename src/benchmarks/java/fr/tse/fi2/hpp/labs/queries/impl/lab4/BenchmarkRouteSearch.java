@@ -3,10 +3,14 @@ package fr.tse.fi2.hpp.labs.queries.impl.lab4;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -31,6 +35,8 @@ public class BenchmarkRouteSearch {
 			.getLogger(MainNonStreaming.class);
 	
 	RouteMembershipProcessor pross = null;
+	
+	int i = 0;
 	
 	@Setup
 	public void init() {
@@ -77,18 +83,26 @@ public class BenchmarkRouteSearch {
 				measure.outputMeasure();
 	}
 	
-	@Benchmark
+	/*@Benchmark
 	@Fork(1)
 	@Measurement(iterations = 5)
 	@Warmup(iterations = 5)
+	@BenchmarkMode(Mode.AverageTime)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	public void bigBen () {
-		DebsRecord r = new DebsRecord("a", "q", (long)0.0, (long)0.0, (long)0.0, (float)0.0, (float)-73.955582,(float)40.772488,(float)-73.949554,(float)40.773617, "a", (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, false);
+		//DebsRecord r = new DebsRecord("DC94C90BDE77EE687F8BB379A349C674", "952CF2A2975BFD2A7B9A341A885BE7CE", (long)0.0, (long)0.0, (long)0.0, (float)0.0, (float)-73.955582,(float)40.772488,(float)-73.949554,(float)40.773617, "a", (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, false);
 		
-		if(pross.searchRoute(r)) {
-			System.out.println("Chemin trouvé");
-		} else {
-			System.out.println("Chemin non trouvé");
-		}
+		//Boolean ok = pross.searchRoute(r);
+		
+		i++;
+		
+		//if(ok) {
+			
+			System.out.println(i);
+			
+		//} else {
+			
+//		}
 	}
 	
 	public static void main(String[] args) throws RunnerException {
@@ -97,6 +111,6 @@ public class BenchmarkRouteSearch {
                 .build();
 
         new Runner(opt).run();
-    }
+    }*/
 
 }
