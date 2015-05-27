@@ -156,7 +156,7 @@ public abstract class AbstractQueryProcessor implements Runnable {
 		double delta_x = 0.005986 / 2;
 
 		// double cell_x;
-		Double cell_x = 1 + Math.floor(((x - x_0) / delta_x) + 0.5);
+		Double cell_x = 1 + Math.floor(((x - x_0) + delta_x) + 0.5);
 
 		return cell_x.intValue();
 	}
@@ -172,7 +172,7 @@ public abstract class AbstractQueryProcessor implements Runnable {
 		double y_0 = 41.474937;
 		double delta_y = 0.004491556 / 2;
 
-		Double cell_y = 1 + Math.floor(((y_0 - y) / delta_y) + 0.5);
+		Double cell_y = 1 + Math.floor(((y_0 - y) + delta_y) + 0.5);
 
 		return cell_y.intValue();
 
@@ -195,7 +195,6 @@ public abstract class AbstractQueryProcessor implements Runnable {
 			try {
 				writeQueue.put(line);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		

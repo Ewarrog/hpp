@@ -155,7 +155,7 @@ public class MergeAndInsertSortMultiFred extends RecursiveTask<int[]> {
 		for (Integer integer : liste) {
 			System.out.println(integer);
 		}
-		System.out.println(liste.length);
+		System.out.println(cores+" cores");
 	}
 
 }

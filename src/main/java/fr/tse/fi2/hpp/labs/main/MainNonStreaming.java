@@ -13,6 +13,7 @@ import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 import fr.tse.fi2.hpp.labs.queries.impl.lab4b.RouteMembershipProcessorB;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query1;
 
 /**
  * Main class of the program. Register your new queries here
@@ -37,15 +38,15 @@ public class MainNonStreaming {
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
 		// Init dispatcher and load everything
 		LoadFirstDispatcher dispatch = new LoadFirstDispatcher(
-				"src/main/resources/data/1000Records.csv");
+				"src/main/resources/data/100k.csv");
 		logger.info("Finished parsing");
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
 		
 		// Add you query processor here
 		//processors.add(new StupidAveragePrice_lab3(measure));
-		RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
-		processors.add(pross);
+		//RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
+		processors.add(new Query1(measure));
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
