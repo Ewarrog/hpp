@@ -125,11 +125,11 @@ public abstract class AbstractQueryProcessor implements Runnable {
 		// Convert pickup coordinates into cell
 		float lat1 = record.getPickup_latitude();
 		float long1 = record.getPickup_longitude();
-		GridPoint pickup = convert(lat1, long1);
+		GridPoint pickup = convert(long1, lat1);
 		// Convert pickup coordinates into cell
 		float lat2 = record.getDropoff_latitude();
 		float long2 = record.getDropoff_longitude();
-		GridPoint dropoff = convert(lat2, long2);
+		GridPoint dropoff = convert(long2, lat2);
 		return new Route(pickup, dropoff);
 	}
 
@@ -153,10 +153,10 @@ public abstract class AbstractQueryProcessor implements Runnable {
 
 		// double x=0;
 		double x_0 = -74.913585;
-		double delta_x = 0.005986 / 2;
+		double delta_x = 0.005986;
 
 		// double cell_x;
-		Double cell_x = 1 + Math.floor(((x - x_0) + delta_x) + 0.5);
+		Double cell_x = 1 + Math.floor(((x - x_0) / delta_x) + 0.5);
 
 		return cell_x.intValue();
 	}
@@ -170,9 +170,9 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	private int cellY(double y) {
 
 		double y_0 = 41.474937;
-		double delta_y = 0.004491556 / 2;
+		double delta_y = 0.004491556;
 
-		Double cell_y = 1 + Math.floor(((y_0 - y) + delta_y) + 0.5);
+		Double cell_y = 1 + Math.floor(((y_0 - y) / delta_y) + 0.5);
 
 		return cell_y.intValue();
 

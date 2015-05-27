@@ -13,17 +13,19 @@ import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 public class Query1 extends AbstractQueryProcessor {
 
 	public LinkedList<DebsRecord> liste = null;
-	public ArrayList<CommonRoute> tenBest = null;
+	public LinkedList<CommonRoute> tenBest = null;
 	
 	public Query1(QueryProcessorMeasure measure) {
 		super(measure);
 		liste = new LinkedList<DebsRecord>();
-		tenBest = new ArrayList<CommonRoute>();
+		tenBest = new LinkedList<CommonRoute>();
 	}
 
 	@Override
 	protected void process(DebsRecord record) {
+		long start_time = System.nanoTime();
 		liste.add(record);
+		tenBest.clear();
 		
 		if(!liste.isEmpty()) {
 			while((record.getDropoff_datetime() - liste.getFirst().getDropoff_datetime())/60000 > 30) {
@@ -40,15 +42,25 @@ public class Query1 extends AbstractQueryProcessor {
 					break;
 				}
 			}
-			if(!exists && tenBest.size() < 10) {
-				tenBest.add(new CommonRoute(r));
+			if(!exists) {
+				tenBest.addFirst(new CommonRoute(r, debsRecord.getDropoff_datetime()));
 			}
 		}
 		Collections.sort(tenBest);
 		String line = "" + new Date(record.getDropoff_datetime()) + " ; ";
-		for (CommonRoute cr : tenBest) {
-			line += cr.getCount() + "," + cr.getPickup().getX() + "." + cr.getPickup().getY() + "," + cr.getDropoff().getX() + "." + cr.getDropoff().getY() + " ; ";
+		for (int i = 0; i < 10; i++) {
+			
+			CommonRoute cr;
+			try {
+				cr = tenBest.get(i);
+				line += cr.getCount() + "," + cr.getPickup().getX() + "." + cr.getPickup().getY() + "," + cr.getDropoff().getX() + "." + cr.getDropoff().getY() + " ; ";
+			} catch (Exception e) {
+				cr = null;
+				line += "NULL;";
+			}
+			
 		}
+		line += (System.nanoTime() - start_time);
 		writeLine(line);
 
 	}
