@@ -1,6 +1,5 @@
 package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -42,7 +41,7 @@ public class Query1 extends AbstractQueryProcessor {
 					break;
 				}
 			}
-			if(!exists) {
+			if(!exists && r.getDropoff().getX()<300 && r.getDropoff().getY()<300 && r.getPickup().getX()<300 && r.getPickup().getY()<300) {
 				tenBest.addFirst(new CommonRoute(r, debsRecord.getDropoff_datetime()));
 			}
 		}

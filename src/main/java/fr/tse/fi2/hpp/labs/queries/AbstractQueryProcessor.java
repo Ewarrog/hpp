@@ -139,8 +139,8 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	 * @param long1
 	 * @return The lat/long converted into grid coordinates
 	 */
-	private GridPoint convert(float lat1, float long1) {
-		return new GridPoint(cellX(lat1), cellY(long1));
+	private GridPoint convert(float long1, float lat1) {
+		return new GridPoint(cellX(long1), cellY(lat1));
 	}
 
 	/**
