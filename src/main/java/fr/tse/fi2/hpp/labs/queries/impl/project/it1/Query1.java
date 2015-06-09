@@ -1,5 +1,6 @@
 package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -13,6 +14,8 @@ public class Query1 extends AbstractQueryProcessor {
 
 	public LinkedList<DebsRecord> liste = null;
 	public LinkedList<CommonRoute> tenBest = null;
+	
+	SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public Query1(QueryProcessorMeasure measure) {
 		super(measure);
@@ -46,7 +49,7 @@ public class Query1 extends AbstractQueryProcessor {
 			}
 		}
 		Collections.sort(tenBest);
-		String line = "" + new Date(record.getDropoff_datetime()) + " ; ";
+		String line = sdfDate.format(new Date(record.getPickup_datetime())) + ", " + sdfDate.format(new Date(record.getDropoff_datetime())) + " ; ";
 		for (int i = 0; i < 10; i++) {
 			
 			CommonRoute cr;
@@ -55,7 +58,7 @@ public class Query1 extends AbstractQueryProcessor {
 				line += cr.getCount() + "," + cr.getPickup().getX() + "." + cr.getPickup().getY() + "," + cr.getDropoff().getX() + "." + cr.getDropoff().getY() + " ; ";
 			} catch (Exception e) {
 				cr = null;
-				line += "NULL;";
+				line += "NULL ; ";
 			}
 			
 		}

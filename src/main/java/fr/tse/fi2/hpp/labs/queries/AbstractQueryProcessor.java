@@ -62,6 +62,8 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	
 	public QueryWriter writer;
 	
+	protected boolean grid600;
+	
 	/**
 	 * Default constructor. Initialize event queue and writer
 	 */
@@ -153,7 +155,12 @@ public abstract class AbstractQueryProcessor implements Runnable {
 
 		// double x=0;
 		double x_0 = -74.913585;
-		double delta_x = 0.005986;
+		double delta_x;
+		if(grid600) {
+			delta_x = 0.005986/2;
+		} else {
+			delta_x = 0.005986;
+		}
 
 		// double cell_x;
 		Double cell_x = 1 + Math.floor(((x - x_0) / delta_x) + 0.5);
@@ -170,7 +177,13 @@ public abstract class AbstractQueryProcessor implements Runnable {
 	private int cellY(double y) {
 
 		double y_0 = 41.474937;
-		double delta_y = 0.004491556;
+		double delta_y;
+		if(grid600) {
+			delta_y = 0.004491556/2;
+		} else {
+			delta_y = 0.004491556;
+		}
+		
 
 		Double cell_y = 1 + Math.floor(((y_0 - y) / delta_y) + 0.5);
 
