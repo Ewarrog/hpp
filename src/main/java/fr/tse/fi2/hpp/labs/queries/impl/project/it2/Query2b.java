@@ -1,4 +1,4 @@
-package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
+package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import fr.tse.fi2.hpp.labs.beans.Route;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 
-public class Query2 extends AbstractQueryProcessor {
+public class Query2b extends AbstractQueryProcessor {
 
 	private LinkedList<DebsRecord> listRecords15;
 	private LinkedList<DebsRecord> listRecords30;
@@ -21,14 +21,13 @@ public class Query2 extends AbstractQueryProcessor {
 	
 	SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	public Query2(QueryProcessorMeasure measure) {
+	public Query2b(QueryProcessorMeasure measure) {
 		super(measure);
 		grid600 = true;
 		listRecords15 = new LinkedList<DebsRecord>();
 		listRecords30 = new LinkedList<DebsRecord>();
 		top10Cell = new LinkedList<Cellule>();
 		greed = new ArrayList<Cellule>(360000);
-		
 	}
 
 	@Override
@@ -76,32 +75,31 @@ public class Query2 extends AbstractQueryProcessor {
 		for (DebsRecord debsRecord : listRecords30) {
 			Route r = convertRecordToRoute(debsRecord);
 
-			if(r.getDropoff().getX()<600 && r.getDropoff().getY()<600 && r.getPickup().getX()<600 && r.getPickup().getY()<600) {
+			if(r.getDropoff().getX()<=600 && r.getDropoff().getY()<=600 && r.getPickup().getX()<=600 && r.getPickup().getY()<=600
+					&& r.getDropoff().getX()>0 && r.getDropoff().getY()>0 && r.getPickup().getX()>0 && r.getPickup().getY()>0) {
 				greed.get((r.getDropoff().getX()-1)+600*(r.getDropoff().getY()-1)).incrEmptyTaxis();
 			}
 		}
 		
 		for (Cellule cell : greed) {
+			cell.calcMedianFare();
 			
-			if(cell.getMedianFare()>0 || cell.getNbEmptyTaxis()>0 || cell.getProfitability()>0) {
-				top10Cell.add(cell);
+			if(!top10Cell.isEmpty() && top10Cell.size()>0) {
+				int i = 0;
+				while((i < top10Cell.size()) && (cell.getProfitability() < top10Cell.get(i).getProfitability()) && (cell.getProfitability() > 0)) {
+					i++;
+				}
+				if(i < 10 && cell.getProfitability() > 0 && cell.getNbEmptyTaxis() > 0) {
+					top10Cell.add(i, cell);
+					if(top10Cell.size() >= 10) {
+						top10Cell.removeLast();
+					}
+				}
+			} else {
+				if(cell.getMedianFare()>0 && cell.getNbEmptyTaxis()>0 && cell.getProfitability()>0) {
+					top10Cell.add(cell);
+				}
 			}
-			
-//			if(!top10Cell.isEmpty() && top10Cell.size()>0) {
-//				int i = 0;
-//				while((i < top10Cell.size()) && (cell.getProfitability() > top10Cell.get(i).getProfitability())) {
-//					i++;
-//				}
-//				if(i < 10) {
-//					top10Cell.add(i, cell);
-//					if(top10Cell.size() >= 10) {
-//						top10Cell.removeFirst();
-//					}
-//				}
-//			} else {
-//				if(cell.getProfitability() > 0)
-//				top10Cell.addFirst(cell);
-//			}
 		}
 		
 		String line = sdfDate.format(new Date(record.getPickup_datetime())) + ", " + sdfDate.format(new Date(record.getDropoff_datetime())) + " ; ";
@@ -110,10 +108,9 @@ public class Query2 extends AbstractQueryProcessor {
 			Cellule cell;
 			try {
 				cell = top10Cell.get(i);
-				if(cell.getProfitability()>0) {
-					line += (cell.getId()%600+1) + "." + (cell.getId()/600+1) + ", " + cell.getNbEmptyTaxis() + ", " + cell.getMedianFare() + ", " + cell.getProfitability() + " ; ";
-				} else {
-					line += "NULL ; ";
+				float prof = cell.getProfitability();
+				if(prof>0) {
+					line += (cell.getId()%600+1) + "." + (cell.getId()/600+1) + ", " + cell.getNbEmptyTaxis() + ", " + cell.getMedianFare() + ", " + prof + " ; ";
 				}
 			} catch (Exception e) {
 				cell = null;

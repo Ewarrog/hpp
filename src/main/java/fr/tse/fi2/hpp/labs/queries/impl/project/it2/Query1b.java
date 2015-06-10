@@ -1,4 +1,4 @@
-package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
+package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -10,14 +10,14 @@ import fr.tse.fi2.hpp.labs.beans.Route;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 
-public class Query1 extends AbstractQueryProcessor {
+public class Query1b extends AbstractQueryProcessor {
 
 	public LinkedList<DebsRecord> liste = null;
 	public LinkedList<CommonRoute> tenBest = null;
 	
 	SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	public Query1(QueryProcessorMeasure measure) {
+	public Query1b(QueryProcessorMeasure measure) {
 		super(measure);
 		liste = new LinkedList<DebsRecord>();
 		tenBest = new LinkedList<CommonRoute>();

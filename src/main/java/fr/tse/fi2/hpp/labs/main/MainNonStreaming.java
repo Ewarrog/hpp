@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
-import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query1;
-import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query2;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query1a;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query2a;
 
 /**
  * Main class of the program. Register your new queries here
@@ -37,7 +37,7 @@ public class MainNonStreaming {
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
 		// Init dispatcher and load everything
 		LoadFirstDispatcher dispatch = new LoadFirstDispatcher(
-				"src/main/resources/data/test_03.csv");
+				"src/main/resources/data/100k.csv");
 		logger.info("Finished parsing");
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
@@ -45,7 +45,7 @@ public class MainNonStreaming {
 		// Add you query processor here
 		//processors.add(new StupidAveragePrice_lab3(measure));
 		//RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
-		processors.add(new Query2(measure));
+		processors.add(new Query2a(measure));
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {

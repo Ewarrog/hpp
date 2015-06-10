@@ -1,4 +1,4 @@
-package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
+package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 
 import java.util.ArrayList;
 import java.util.Collections;
