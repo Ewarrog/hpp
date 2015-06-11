@@ -45,14 +45,16 @@ public class Query1a extends AbstractQueryProcessor {
 				}
 			}
 			if(!exists && r.getDropoff().getX()<300 && r.getDropoff().getY()<300 && r.getPickup().getX()<300 && r.getPickup().getY()<300) {
-				tenBest.addFirst(new CommonRoute(r, debsRecord.getDropoff_datetime()));
+				tenBest.add(new CommonRoute(r, debsRecord.getDropoff_datetime()));
 			}
 		}
 		Collections.sort(tenBest);
+
 		String line = sdfDate.format(new Date(record.getPickup_datetime())) + ", " + sdfDate.format(new Date(record.getDropoff_datetime())) + " ; ";
+		CommonRoute cr;
 		for (int i = 0; i < 10; i++) {
 			
-			CommonRoute cr;
+			
 			try {
 				cr = tenBest.get(i);
 				line += cr.getCount() + "," + cr.getPickup().getX() + "." + cr.getPickup().getY() + "," + cr.getDropoff().getX() + "." + cr.getDropoff().getY() + " ; ";

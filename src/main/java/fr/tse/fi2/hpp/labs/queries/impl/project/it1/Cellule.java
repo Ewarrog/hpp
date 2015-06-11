@@ -1,19 +1,19 @@
 package fr.tse.fi2.hpp.labs.queries.impl.project.it1;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public class Cellule {
 	
 	private int id;
 	private int nbEmptyTaxis;
 	private float medianFare;
-	private ArrayList<Float> records;
+	private LinkedList<Float> records;
 
 	public Cellule(int id) {
 		this.id = id;
 		nbEmptyTaxis = 0;
-		setRec(new ArrayList<Float>());
+		records = new LinkedList<Float>();
 	}
 	
 	/**
@@ -25,6 +25,10 @@ public class Cellule {
 		if(rex > 0) {
 			records.add(rex);
 		}
+	}
+	
+	public void remove() {
+		records.removeFirst();
 	}
 	
 	public void incrEmptyTaxis() {
@@ -56,11 +60,11 @@ public class Cellule {
 		this.nbEmptyTaxis = nbTaxisVides;
 	}
 
-	public ArrayList<Float> getRec() {
+	public LinkedList<Float> getRec() {
 		return records;
 	}
 
-	public void setRec(ArrayList<Float> recs) {
+	public void setRec(LinkedList<Float> recs) {
 		this.records = recs;
 	}
 	

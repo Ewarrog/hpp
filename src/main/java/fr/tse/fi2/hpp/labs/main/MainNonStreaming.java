@@ -13,6 +13,8 @@ import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query1a;
 import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query2a;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query1b;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query2b;
 
 /**
  * Main class of the program. Register your new queries here
@@ -33,11 +35,12 @@ public class MainNonStreaming {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
+		long start_time = System.nanoTime();
 		// Init query time measure
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
 		// Init dispatcher and load everything
 		LoadFirstDispatcher dispatch = new LoadFirstDispatcher(
-				"src/main/resources/data/100k.csv");
+				"src/main/resources/data/250k.csv");
 		logger.info("Finished parsing");
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
@@ -45,7 +48,8 @@ public class MainNonStreaming {
 		// Add you query processor here
 		//processors.add(new StupidAveragePrice_lab3(measure));
 		//RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
-		processors.add(new Query2a(measure));
+		//processors.add(new Query1a(measure));
+		processors.add(new Query1b(measure));
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
@@ -75,24 +79,7 @@ public class MainNonStreaming {
 		measure.setProcessedRecords(dispatch.getRecords());
 		measure.outputMeasure();
 		
-		/*for(int i=0; i<14378; i++) {
-			if(pross.listBloom.get(i) == true) {
-				System.out.println("1");
-			} else {
-				System.out.println("0");
-			}
-		}*/
-		
-		//03B0493FEB9C714754477C4B816B7B73,00B7691D86D96AEBD21DD9E138F90840,2013-01-01 00:04:00,2013-01-01 00:06:00,120,0.00,-73.802734,40.705162,-73.802734,40.705162,CRD,3.00,0.50,0.50,0.45,0.00,4.45
-		
-		//DebsRecord r = new DebsRecord("a", "q", (long)0.0, (long)0.0, (long)0.0, (float)0.0, (float)-73.955582,(float)40.772488,(float)-73.949554,(float)40.773617, "a", (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, false);
-		
-		/*DebsRecord r = new DebsRecord("03B0493FEB9C714754477C4B816B7B73", "00B7691D86D96AEBD21DD9E138F90840", (long)0.0, (long)0.0, (long)0.0, (float)0.0, (float)-73.802734,(float)40.705162,(float)-73.802734,(float)40.705162, "a", (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, false);
-		if(pross.searchRoute(r)) {
-			System.out.println("Chemin trouvé");
-		} else {
-			System.out.println("Chemin non trouvé");
-		}*/
+		System.out.println(System.nanoTime() - start_time);
 
 	}
 

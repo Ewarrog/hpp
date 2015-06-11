@@ -67,7 +67,8 @@ public class Query2a extends AbstractQueryProcessor {
 		for (DebsRecord debsRecord : listRecords15) {
 			Route r = convertRecordToRoute(debsRecord);
 
-			if(r.getDropoff().getX()<600 && r.getDropoff().getY()<600 && r.getPickup().getX()<600 && r.getPickup().getY()<600) {
+			if(r.getDropoff().getX()<=600 && r.getDropoff().getY()<=600 && r.getPickup().getX()<=600 && r.getPickup().getY()<=600
+					&& r.getDropoff().getX()>0 && r.getDropoff().getY()>0 && r.getPickup().getX()>0 && r.getPickup().getY()>0) {
 				greed.get((r.getPickup().getX()-1)+600*(r.getPickup().getY()-1)).add(debsRecord.getFare_amount()+debsRecord.getTip_amount());
 			}
 		}
