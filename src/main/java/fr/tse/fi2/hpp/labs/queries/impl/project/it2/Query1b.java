@@ -1,10 +1,10 @@
 package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import fr.tse.fi2.hpp.labs.beans.DebsRecord;
@@ -18,14 +18,13 @@ public class Query1b extends AbstractQueryProcessor {
 
 	public LinkedList<CommonRoute> liste = null;
 
-	public LinkedList<CompteRoute> tenBest = null;
+	public ArrayList<CompteRoute> tenBest = null;
 
 	long last_time;
 	long start_time;
 	CommonRoute route = null;
 	CompteRoute cr = null;
 
-	Iterator<CompteRoute> it = null;
 	int i;
 	String line;
 
@@ -42,7 +41,7 @@ public class Query1b extends AbstractQueryProcessor {
 
 		liste = new LinkedList<CommonRoute>();
 
-		tenBest = new LinkedList<CompteRoute>();
+		tenBest = new ArrayList<CompteRoute>(10000);
 
 		grid600 = false;
 
@@ -64,28 +63,25 @@ public class Query1b extends AbstractQueryProcessor {
 				cr = map.get(key);
 				cr.setLast_dropoff_time(last_time);
 				cr.incr();
-
-				if(tenBest.size() >= 10) {
-					if(tenBest.get(9).getCounter() <= cr.getCounter()) {
-						sortRequiered = true;
-					}					
-				} else {
-					sortRequiered = true;
-				}
-
 			} else {
 				cr = new CompteRoute(last_time, route.getRoute());
 				map.put(key, cr);
 				tenBest.add(cr);
-				if(tenBest.size() >= 10) {
-					if(tenBest.get(9).getCounter() <= cr.getCounter()) {
-						sortRequiered = true;
-					}					
-				} else {
-					sortRequiered = true;
-				}
 			}
 
+			
+			if(tenBest.size() >= 10) {
+				if(tenBest.get(9).getCounter() <= cr.getCounter()) {
+					for(i = 0; i<9; i++) {
+						if(tenBest.get(i).getCounter() < tenBest.get(i+1).getCounter()) {
+							sortRequiered = true;
+						}
+					}
+				}
+			} else {
+				sortRequiered = true;
+			}
+			
 			liste.add(route);
 			
 			if(!liste.isEmpty()) {
@@ -113,9 +109,9 @@ public class Query1b extends AbstractQueryProcessor {
 		
 
 		i = 0;
-		for (CompteRoute truc : tenBest) {
+		for (CompteRoute cptRoute : tenBest) {
 			i++;
-			line += truc.getCoord() + ",";
+			line += cptRoute.getCoord() + ",";
 			if(i>=10) {
 				break;
 			}
@@ -135,6 +131,7 @@ public class Query1b extends AbstractQueryProcessor {
 				&& r.getDropoff().getX()>0 && r.getDropoff().getY()>0 && r.getPickup().getX()>0 && r.getPickup().getY()>0;
 	}
 
+	// Vérifie que la route se trouve dans le top 10
 	private boolean isInTop10(CommonRoute r) {
 		for (i = 0; i<10; i++) {
 			if(tenBest.get(i).getCoord().equals(r.toString())) return true;

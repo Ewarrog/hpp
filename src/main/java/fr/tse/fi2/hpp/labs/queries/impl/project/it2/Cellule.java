@@ -3,14 +3,15 @@ package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class Cellule {
+public class Cellule implements Comparable<Cellule>{
 	
-	private int id;
+	private String id;
 	private int nbEmptyTaxis;
 	private float medianFare;
 	private LinkedList<Float> records;
 
-	public Cellule(int id) {
+	
+	public Cellule(String id) {
 		this.id = id;
 		nbEmptyTaxis = 0;
 		records = new LinkedList<Float>();
@@ -44,9 +45,10 @@ public class Cellule {
 	}
 	
 	public void calcMedianFare() {
-		Collections.sort(records);
-		if(records.size()>0) {
-			medianFare = records.get((int)(records.size()/2));
+		LinkedList<Float> copy = (LinkedList<Float>) records.clone();
+		Collections.sort(copy);
+		if(copy.size()>0) {
+			medianFare = copy.get((int)(copy.size()/2));
 		} else {
 			medianFare = 0;
 		}
@@ -69,11 +71,33 @@ public class Cellule {
 	}
 	
 	public float getProfitability() {
-		return medianFare/nbEmptyTaxis;
+		if(nbEmptyTaxis != 0 && medianFare != 0) {
+			return medianFare/nbEmptyTaxis;
+		} else {
+			return 0;
+		}
+		
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
+	}
+
+	@Override
+	public int compareTo(Cellule o) {
+		if(o.getProfitability() > this.getProfitability()) {
+			return 1;
+		} else if(o.getProfitability() < this.getProfitability()) {
+			return -1;
+		} else {
+			if(o.getMedianFare() > this.medianFare) {
+				return 1;
+			} else if(o.getMedianFare() < this.medianFare) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 }

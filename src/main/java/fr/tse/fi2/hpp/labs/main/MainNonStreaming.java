@@ -40,7 +40,7 @@ public class MainNonStreaming {
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
 		// Init dispatcher and load everything
 		LoadFirstDispatcher dispatch = new LoadFirstDispatcher(
-				"src/main/resources/data/250k.csv");
+				"src/main/resources/data/sorted_data.csv");
 		logger.info("Finished parsing");
 		// Query processors
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
@@ -49,7 +49,7 @@ public class MainNonStreaming {
 		//processors.add(new StupidAveragePrice_lab3(measure));
 		//RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
 		//processors.add(new Query1a(measure));
-		processors.add(new Query1b(measure));
+		processors.add(new Query2b(measure));
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {

@@ -22,4 +22,8 @@ public class CommonRoute {
 	public String toString() {
 		return route.getPickup().getX() + "." + route.getPickup().getY() + "," + route.getDropoff().getX() + "." + route.getDropoff().getY();
 	}
+	
+	public String getDropoffString() {
+		return route.getDropoff().getX() + "." + route.getDropoff().getY();
+	}
 }

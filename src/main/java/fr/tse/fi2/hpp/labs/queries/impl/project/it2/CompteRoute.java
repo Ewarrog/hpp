@@ -13,15 +13,15 @@ public class CompteRoute implements Comparable<CompteRoute> {
 
 	private int counter;
 	
-	private double last_dropoff_time;
+	private long last_dropoff_time;
 	
 	private String coord;
 	
-	private static int ordre_global = 0;
+	private static long ordre_global = 0;
 	
-	private int ordre;
+	private long ordre;
 	
-	public CompteRoute(double last_time, Route r) {
+	public CompteRoute(long last_time, Route r) {
 		counter = 1;
 		ordre = ordre_global++;
 		coord = coordFromRoute(r);
@@ -42,14 +42,24 @@ public class CompteRoute implements Comparable<CompteRoute> {
 	
 	@Override
 	public int compareTo(CompteRoute cr) {
-		if(counter == cr.getCounter()) {
-			if(last_dropoff_time == cr.getLast_dropoff_time()) {
-				return cr.getOrdre() - ordre;
-			} else {
-				return (int)(cr.getLast_dropoff_time() - last_dropoff_time);
-			}
+		if(cr.getCounter() > counter) {
+			return 1;
+		} else if (cr.getCounter() < counter) {
+			return -1;
 		} else {
-			return cr.counter - counter;
+			if(cr.getLast_dropoff_time() > last_dropoff_time) {
+				return 1;
+			} else if (cr.getLast_dropoff_time() < last_dropoff_time) {
+				return -1;
+			} else {
+				if(cr.getOrdre() > ordre) {
+					return 1;
+				} else if(cr.getOrdre() < ordre) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
 		}
 	}
 	
@@ -61,15 +71,15 @@ public class CompteRoute implements Comparable<CompteRoute> {
 		return counter;
 	}
 	
-	public double getLast_dropoff_time() {
+	public long getLast_dropoff_time() {
 		return last_dropoff_time;
 	}
 	
-	public int getOrdre() {
+	public long getOrdre() {
 		return ordre;
 	}
 	
-	public void setLast_dropoff_time(double last_dropoff_time) {
+	public void setLast_dropoff_time(long last_dropoff_time) {
 		this.last_dropoff_time = last_dropoff_time;
 	}
 }
