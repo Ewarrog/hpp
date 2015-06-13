@@ -28,6 +28,12 @@ public class CompteRoute implements Comparable<CompteRoute> {
 		last_dropoff_time = last_time;
 	}
 
+	/**
+	 * Renvoie les coordonnées de la route sous la forme d'une chaîne de caractères
+	 * @param r Route dont on veut retourner les coordonnées
+	 * @return
+	 * 		Coordonnées de départ et d'arrivée de la route sous forme de String
+	 */
 	private String coordFromRoute(Route r) {		
 		return r.getPickup().getX() + "." + r.getPickup().getY() + "," + r.getDropoff().getX() + "." + r.getDropoff().getY();
 	}

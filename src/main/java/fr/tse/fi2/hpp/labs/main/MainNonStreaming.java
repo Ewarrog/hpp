@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import fr.tse.fi2.hpp.labs.beans.measure.QueryProcessorMeasure;
 import fr.tse.fi2.hpp.labs.dispatcher.LoadFirstDispatcher;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
-import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query1a;
-import fr.tse.fi2.hpp.labs.queries.impl.project.it1.Query2a;
 import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query1b;
 import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query2b;
 
@@ -46,9 +44,7 @@ public class MainNonStreaming {
 		List<AbstractQueryProcessor> processors = new ArrayList<>();
 		
 		// Add you query processor here
-		//processors.add(new StupidAveragePrice_lab3(measure));
-		//RouteMembershipProcessorB pross = new RouteMembershipProcessorB(measure);
-		//processors.add(new Query1a(measure));
+		processors.add(new Query1b(measure));
 		processors.add(new Query2b(measure));
 
 		// Register query processors

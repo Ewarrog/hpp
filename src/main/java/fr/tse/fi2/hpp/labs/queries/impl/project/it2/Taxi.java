@@ -1,5 +1,13 @@
 package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 
+/**
+ * Classe représentant un taxi.
+ * Contient la date et les coordonnées du dernier dépot ainsi qu'un booléen
+ * permettant de dire si le dernier dépot date d'il y a moins de 30 minutes.
+ * 
+ * @author Aurelien & Samed
+ *
+ */
 public class Taxi {
 	private boolean within30;
 	private long lastDropoff;

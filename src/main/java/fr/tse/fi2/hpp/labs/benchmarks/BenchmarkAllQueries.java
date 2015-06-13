@@ -27,9 +27,10 @@ import fr.tse.fi2.hpp.labs.main.MainNonStreaming;
 import fr.tse.fi2.hpp.labs.queries.AbstractQueryProcessor;
 import fr.tse.fi2.hpp.labs.queries.impl.lab4.RouteMembershipProcessor;
 import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query1b;
+import fr.tse.fi2.hpp.labs.queries.impl.project.it2.Query2b;
 
 @State(Scope.Thread)
-public class BenchmarkQuery1 {
+public class BenchmarkAllQueries {
 
 	final static Logger logger = LoggerFactory
 			.getLogger(MainNonStreaming.class);
@@ -48,7 +49,7 @@ public class BenchmarkQuery1 {
 	@Warmup(iterations = 5)
 	@BenchmarkMode(Mode.AverageTime)
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	public void BenchmarkQuery1b () {
+	public void BenchmarkQueries () {
 
 		// Init query time measure
 		QueryProcessorMeasure measure = new QueryProcessorMeasure();
@@ -61,6 +62,7 @@ public class BenchmarkQuery1 {
 
 		// Add you query processor here
 		processors.add(new Query1b(measure));
+		processors.add(new Query2b(measure));
 
 		// Register query processors
 		for (AbstractQueryProcessor queryProcessor : processors) {
@@ -94,7 +96,7 @@ public class BenchmarkQuery1 {
 
 	public static void main(String[] args) throws RunnerException {
 		Options opt = new OptionsBuilder()
-		.include(BenchmarkQuery1.class.getSimpleName())
+		.include(BenchmarkAllQueries.class.getSimpleName())
 		.build();
 
 		new Runner(opt).run();

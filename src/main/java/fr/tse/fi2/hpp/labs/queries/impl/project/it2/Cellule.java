@@ -3,6 +3,15 @@ package fr.tse.fi2.hpp.labs.queries.impl.project.it2;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * Classe représentant une case de la grille.
+ * Contient les coordonnées de la case, le nombre de taxis vides sur cette case depuis moins de 30 minutes, 
+ * la liste des fares et tips des 15 dernières minutes et la médiane de ces fares.
+ * Permet le calcul de la productivité de cette case.
+ * 
+ * @author Aurelien & Samed
+ *
+ */
 public class Cellule implements Comparable<Cellule>{
 	
 	private String id;
@@ -18,9 +27,9 @@ public class Cellule implements Comparable<Cellule>{
 	}
 	
 	/**
-	 * Ajoute un départ de taxi à la zone et donc un fair
+	 * Ajoute un fare à la liste des fares
 	 * 
-	 * @param rex
+	 * @param rex fare et tip à ajouter à la liste
 	 */
 	public void add(float rex) {
 		if(rex > 0) {
@@ -28,6 +37,9 @@ public class Cellule implements Comparable<Cellule>{
 		}
 	}
 	
+	/**
+	 * Supprime le fare le plus ancien
+	 */
 	public void remove() {
 		records.removeFirst();
 	}
@@ -44,6 +56,11 @@ public class Cellule implements Comparable<Cellule>{
 		return medianFare;
 	}
 	
+	/**
+	 * Calcule le fare médian.
+	 * Pour cela, on trie une copie de la liste afin de récupérer la valeur médiane.
+	 * On trie une copie afin de conserver l'ordre d'ancienneté de la liste d'origine.
+	 */
 	public void calcMedianFare() {
 		LinkedList<Float> copy = (LinkedList<Float>) records.clone();
 		Collections.sort(copy);
@@ -70,6 +87,11 @@ public class Cellule implements Comparable<Cellule>{
 		this.records = recs;
 	}
 	
+	/**
+	 * Calcule et renvoie la profitabilité de la case.
+	 * @return
+	 * 		Profitabilité de la case.
+	 */
 	public float getProfitability() {
 		if(nbEmptyTaxis != 0 && medianFare != 0) {
 			return medianFare/nbEmptyTaxis;
